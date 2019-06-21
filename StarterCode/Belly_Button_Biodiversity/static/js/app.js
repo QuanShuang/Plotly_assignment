@@ -15,10 +15,12 @@ function buildMetadata(sample) {
     Object.entries(data).forEach(([key, value]) => {metaDataSample
       .append("p").text(`${key}: ${value}`)
     });
-  });
-    // BONUS: Build the Gauge Chart
+    
+    // Bonus: build the Gauge chart here: 
     buildGauge(data.WFREQ);
-    // console.log(data.WFREQ);
+    console.log(data.WFREQ);
+  });
+    
 };
 
 function buildCharts(sample) {
