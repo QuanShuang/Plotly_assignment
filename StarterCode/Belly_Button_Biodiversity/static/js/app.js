@@ -17,19 +17,76 @@ function buildMetadata(sample) {
     });
   });
     // BONUS: Build the Gauge Chart
-    // buildGauge(data.WFREQ);
+    buildGauge(data.WFREQ);
+    // console.log(data.WFREQ);
 };
 
 function buildCharts(sample) {
 
   // @TODO: Use `d3.json` to fetch the sample data for the plots
-
+  d3.json(`/samples/${sample}`).then(data => {
+    // console.log(data);
     // @TODO: Build a Bubble Chart using the sample data
+    var otu_ids = data.otu_ids;
+    var sample_values = data.sample_values;
+    var otu_labels = data.otu_labels;
+
+    // Bubble chart code below
+    var trace1 = {
+      x: otu_ids,
+      y: sample_values,
+      mode: 'markers',
+      type: 'scatter',
+      text: otu_labels,
+      marker: {size: sample_values, color: otu_ids}
+    };
+
+    var BubbleData = [trace1];
+
+    var Bubble_layout = {
+      xaxis: {
+        title: "OTU ID"
+      },
+      yaxis: {
+        title: "Sample Value"
+      },
+      title: "<b> Belly Button Bubble Chart </b>",
+      width: 1000
+    };
+
+    Plotly.newPlot("bubble", BubbleData, Bubble_layout, {responsive: true});
 
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
-}
+    var top_otu_ids = data.otu_ids.slice(0,10);
+    var top_sample_values = data.sample_values.slice(0,10);
+    var top_otu_labels = data.otu_labels.slice(0,10);
+
+    // console.log(top_otu_ids);
+    // console.log(top_sample_values);
+    // console.log(top_otu_labels);
+
+    // Pie Chart code below
+
+    var trace2 = {
+      values: top_sample_values,
+      labels: top_otu_ids,
+      type: "pie",
+      textposition: "inside",
+      hovertext: top_otu_labels
+    };
+
+    var PieData = [trace2];
+
+    var Pie_layout = {
+      title: "<b> Belly Button Pie Chart </b>"
+    };
+
+    Plotly.newPlot("pie", PieData, Pie_layout, {responsive: true});
+
+  });
+};
 
 function init() {
   // Grab a reference to the dropdown select element
